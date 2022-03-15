@@ -359,20 +359,33 @@ function defaultFetchOpts() {
 // TODO - Make a fetch call (with error handling!) to each of the following API endpoints 
 function getTracks() {
     // GET request to `${SERVER}/api/tracks`
-    fetch(`${SERVER}/api/tracks`).then((response) => {
-        return response;
-    }).catch((error) => {
-        console.log(error, "Not able to get the tracks from the server");
-    })
+    const myTrackRequest = new Request(`${SERVER}/api/tracks`, {
+        method: 'GET',
+        cache: 'default',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': SERVER,
+        }
+    });
+
+    return fetch(myTrackRequest);
 }
 
 function getRacers() {
-    // GET request to `${SERVER}/api/cars`
-    fetch(`${SERVER}/api/cars`).then((response) => {
-        return response;
-    }).catch((error) => {
-        console.log(error, "Not able to get the cars from the server");
-    })
+    // GET Request to `${SERVER}/api/cars`
+    const myRaceRequest = new Request(`${SERVER}/api/cars`, {
+        method: 'GET',
+        cache: 'default',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': SERVER,
+        }
+    });
+
+    return fetch(myRaceRequest);
+
 }
 
 function createRace(player_id, track_id) {
