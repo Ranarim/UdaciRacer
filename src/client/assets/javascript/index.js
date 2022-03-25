@@ -145,7 +145,7 @@ function runRace(raceID) {
 async function runCountdown() {
     try {
         // wait for the DOM to load
-        await delay(1000)
+        await delay(100)
         let timer = 3
 
         return new Promise(resolve => {
@@ -153,10 +153,10 @@ async function runCountdown() {
             const myInterval = setInterval(decreaseNum, 1000, timer);
 
             function decreaseNum(num) {
+                timer -= 1;
                 // run this DOM manipulation to decrement the countdown for the user
                 document.getElementById('big-numbers').innerHTML = timer;
                 //Decrease timer by one 
-                timer -= 1;
                 // if the countdown is done, clear the interval, resolve the promise, and return
                 if (timer === 0) {
                     clearInterval(myInterval);
@@ -358,7 +358,7 @@ function defaultFetchOpts() {
 
 // TODO - Make a fetch call (with error handling!) to each of the following API endpoints 
 
-//CHECK
+
 async function getTracks() {
     try {
         // GET request to `${SERVER}/api/tracks`
@@ -370,7 +370,7 @@ async function getTracks() {
     }
 }
 
-//CHECK
+
 async function getRacers() {
     // GET request to `${SERVER}/api/cars`
     try {
@@ -386,13 +386,14 @@ function createRace(player_id, track_id) {
     player_id = parseInt(player_id)
     track_id = parseInt(track_id)
     const body = { player_id, track_id }
-
+        // posting the player_id and the track_id to the races
     return fetch(`${SERVER}/api/races`, {
             method: 'POST',
             ...defaultFetchOpts(),
             dataType: 'jsonp',
             body: JSON.stringify(body)
         })
+        // getting the information for defining the global race_id variable in the store
         .then(res => {
             return res.json()
         })
@@ -412,6 +413,8 @@ async function getRace(id) {
 
 
 function startRace(id) {
+    // Posting the Information, that the race is about to start
+    // We are not posting any content in the url path, there we dont need the body tag
     return fetch(`${SERVER}/api/races/${id}/start`, {
         method: 'POST',
         ...defaultFetchOpts(),
